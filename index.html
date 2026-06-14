@@ -6,7 +6,7 @@
     <title>城市花卉节线上导览</title>
     <style>
         :root {
-            --primary-color: #4CAF50;
+            --primary-color: #56ab2f;
             --bg-color: #f9fdf9;
             --text-main: #333333;
         }
@@ -21,73 +21,73 @@
             text-align: center;
         }
 
-        /* 导航图片容器 */
-        .nav-wrapper {
-            position: relative;
-            width: 100%;
-            padding: 20px;
-        }
+        .nav-wrapper { position: relative; width: 100%; padding: 20px; }
+        .nav-img { width: 100%; border-radius: 20px; display: block; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-        .nav-img {
-            width: 100%;
-            border-radius: 20px;
-            display: block;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        /* 透明点击区域 */
+        /* 点击区域与文字标签 */
         .click-area {
             position: absolute;
             cursor: pointer;
-            /* 调试时可开启下行背景以查看位置 */
-            /* background: rgba(255, 0, 0, 0.2); */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .text-label {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 8px 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+        .text-label p { font-size: 10px; color: #666; font-weight: normal; margin-top: 2px; }
 
         #map-modal {
-            position: fixed;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            z-index: 1000;
+            position: fixed; top: 100%; left: 0; width: 100%; height: 100%;
+            background-color: white; z-index: 1000;
             transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
         #map-modal.active { top: 0; }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-        }
-
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; }
         .modal-body { flex: 1; width: 100%; border: none; }
         .close-btn { font-size: 24px; color: #ff4d4f; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🌸 2026 城市花卉节</h1>
-    </header>
+    <header><h1>🌸 2026 城市花卉节</h1></header>
 
     <main>
         <div class="nav-wrapper">
             <img src="屏幕快照 2026-06-15 上午3.00.47.png" class="nav-img" alt="导览图">
             
-            <div id="open-map-btn" class="click-area" style="top: 60%; left: 10%; width: 25%; height: 20%;"></div>
-            <div id="guide-btn" class="click-area" style="top: 60%; left: 65%; width: 25%; height: 20%;"></div>
-            <div id="activity-btn" class="click-area" style="top: 20%; left: 35%; width: 30%; height: 20%;"></div>
+            <div id="open-map-btn" class="click-area" style="top: 55%; left: 10%; width: 35%; height: 20%;">
+                <div class="text-label">🗺️ 赏花地图<p>实时点位导航</p></div>
+            </div>
+            
+            <div id="guide-btn" class="click-area" style="top: 55%; left: 55%; width: 35%; height: 20%;">
+                <div class="text-label">📸 花卉图鉴<p>认识百种名花</p></div>
+            </div>
+            
+            <div id="activity-btn" class="click-area" style="top: 20%; left: 10%; width: 35%; height: 20%;">
+                <div class="text-label">📅 活动日程<p>精彩巡游时刻</p></div>
+            </div>
+            
+            <div id="shop-btn" class="click-area" style="top: 20%; left: 55%; width: 35%; height: 20%;">
+                <div class="text-label">🎁 文创周边<p>精美纪念好物</p></div>
+            </div>
         </div>
     </main>
 
     <div id="map-modal">
         <div class="modal-header">
-            <h2>功能页面</h2>
+            <h2>功能导览</h2>
             <span class="close-btn" id="close-map-btn">&times;</span>
         </div>
         <iframe class="modal-body" id="map-iframe" src="" frameborder="0"></iframe>
@@ -105,6 +105,7 @@
         document.getElementById('open-map-btn').addEventListener('click', () => openModal("map.html"));
         document.getElementById('guide-btn').addEventListener('click', () => openModal("guide.html"));
         document.getElementById('activity-btn').addEventListener('click', () => openModal("activity.html"));
+        document.getElementById('shop-btn').addEventListener('click', () => openModal("shop.html"));
 
         document.getElementById('close-map-btn').addEventListener('click', () => {
             modal.classList.remove('active');
