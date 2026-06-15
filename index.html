@@ -12,7 +12,15 @@
 
         /* 顶部导航 */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; border-bottom: 1px solid #eee; }
-        .logo { font-weight: 500; font-size: 1.1rem; letter-spacing: -0.5px; }
+        
+        .logo { 
+            font-weight: 500; 
+            font-size: 1.8rem;   /* 大字号，更醒目 */
+            letter-spacing: -1px; 
+            font-style: italic;  /* 增加斜体，让品牌标识更具设计感 */
+            color: var(--deep-gray);
+            cursor: pointer;
+        }
         .nav-links { display: flex; gap: 25px; font-size: 0.85rem; font-weight: 400; color: #666; }
         .qr-icon { width: 28px; height: 28px; background: #ddd; border-radius: 50%; cursor: pointer; }
 
@@ -59,6 +67,9 @@
 
     <nav>
         <div class="logo">Flowerwalk in Beijing</div>
+        <div class="logo">
+    Flower<span style="color: var(--rose-pink);">walk</span> in Beijing
+</div>
         <div class="nav-links">
             <span>Home</span><span>Explore</span><span>Events</span><span>Store</span>
         </div>
