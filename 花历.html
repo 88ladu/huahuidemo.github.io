@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Bloom Seasonal Guide</title>
+    <style>
+        body { background-color: #FAF8F5; padding: 40px 20px; font-family: 'Inter', sans-serif; color: #2E2E2E; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .timeline { position: relative; padding-left: 50px; margin-top: 40px; }
+        .timeline::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: #D1D5DB; }
+        
+        .month-item { position: relative; margin-bottom: 30px; cursor: pointer; }
+        /* 圆点样式 */
+        .month-item::before { content: ''; position: absolute; left: -38px; top: 35px; width: 14px; height: 14px; border-radius: 50%; background: #9FB59A; border: 3px solid #FAF8F5; z-index: 2;}
+        
+        /* 卡片悬停效果：缩放与描边 */
+.card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 25px; 
+    border-radius: 20px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: 2px solid transparent; /* 预留描边位置 */
+    transition: transform 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);             /* 轻微放大 */
+    border: 2px solid var(--deep-gray);  /* 出现深灰色描边 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* 图片固定位置 */
+.flower-icon { 
+    width: 80px; 
+    height: 80px; 
+    flex-shrink: 0;       /* 确保图片位不被文字压缩 */
+    margin-left: 20px; 
+    border-radius: 50%; 
+    overflow: hidden; 
+    background: rgba(0,0,0,0.05);
+}
+.flower-icon img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .month-3 { background-color: #E8EBE4; } .month-4 { background-color: #F2E8E4; }
+        .month-5 { background-color: #E4EBE9; } .month-6 { background-color: #E9E4EB; }
+        .month-9 { background-color: #EBE5E4; } .month-12 { background-color: #E4E9EB; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align:center; font-weight:300;">Bloom Seasonal Guide</h1>
+        <div class="timeline" id="root"></div>
+    </div>
+
+    <script>
+    const data = [
+        {m: "3月", f: "樱花", color: "month-3", img: "sakura.gif", loc: "玉渊潭公园", intro: "春日初醒，樱花如雪。漫步在玉渊潭，寻找那一抹最纯粹的春色。樱花的花语是生命与希望，它是北京春天最灵动的注脚。"},
+        {m: "4月", f: "海棠", color: "month-4", img: "begonia.gif", loc: "元大都遗址", intro: "海棠花溪，满城春色。在这个季节，海棠将北京装点得如诗如画。它是中国传统美学的代表，花姿潇洒，似有若无的清香令人沉醉。"},
+        {m: "5月", f: "月季", color: "month-5", img: "rose.gif", loc: "陶然亭", intro: "花中皇后，尽态极妍。五月的北京，街道两旁皆是月季。其色彩斑斓，从淡雅的粉到深邃的红，展现着这座城市的包容与优雅。"},
+        {m: "6月", f: "荷花", loc: "圆明园", color: "month-6", img: "lotus.gif", intro: "盛夏之魂，清凉之境。圆明园的荷花，伴随着历史的沧桑与自然的宁静。荷叶田田，花开绰约，是消暑赏心的不二之选。"},
+        {m: "9月", f: "菊花", loc: "北海公园", color: "month-9", img: "mum.gif", intro: "秋意正浓，金菊绽放。北海公园的菊花展，承载着北京深厚的秋季民俗。花朵形态各异，疏影横斜，尽显文人墨客的傲骨。"},
+        {m: "12月", f: "梅花", loc: "明城墙", color: "month-12", img: "plum.gif", intro: "寒冬腊月，疏影暗香。梅花在明城墙下独自盛开，那种冷冽的清香是冬日里的生命礼赞。它是最能体现北京冬日风骨的花卉。"}
+    ];
+
+    const root = document.getElementById('root'); // 这里已修正为 'root'
+    data.forEach(item => {
+        // 动态生成不同颜色的花朵动画，根据花名选择不同的CSS动画类
+    let animClass = item.f === "樱花" ? "bloom-sakura" : 
+                    item.f === "海棠" ? "bloom-begonia" : 
+                    item.f === "月季" ? "bloom-rose" : 
+                    item.f === "荷花" ? "bloom-lotus" : 
+                    item.f === "菊花" ? "bloom-mum" : "bloom-plum";
+
+        root.innerHTML += `
+            <div class="month-item" onclick="this.querySelector('.details').style.display = (this.querySelector('.details').style.display === 'block' ? 'none' : 'block')">
+                <div class="card ${item.color}">
+                    <div class="text-area" style="flex:1;">
+                        <div style="font-size:0.8rem; color:#888;">${item.m}</div>
+                        <h2 style="font-weight:400; font-size:1.4rem;">${item.f}</h2>
+                        <div class="details">
+                            <p><strong>📍 赏花坐标：</strong>${item.loc}</p>
+                            <p><strong>📖 花卉物语：</strong>${item.intro}</p>
+                            <p style="margin-top:10px; font-style:italic; color:#666;">“跟随花期，发现北京隐藏的灵魂。”</p>
+                        </div>
+                    </div>
+                    <div class="flower-icon">
+                        <img src="animations/${item.img}" alt="花" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    </script>
+</body>
+</html>
