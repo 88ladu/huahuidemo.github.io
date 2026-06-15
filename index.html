@@ -3,65 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>城市花卉节线上导览</title>
+    <title>Flower Walk Beijing | 城市花卉漫游</title>
     <style>
         :root {
-            --primary-color: #56ab2f;
-            --bg-color: #f9fdf9;
-            --text-main: #333333;
+            --brand-white: #FAF8F5;
+            --sage-green: #9FB59A;
+            --rose-pink: #F3D7D7;
+            --deep-gray: #2E2E2E;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'PingFang SC', sans-serif; }
+        body { background-color: var(--brand-white); color: var(--deep-gray); animation: fadeIn 0.8s ease; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        header {
-            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
+        header { padding: 50px 20px 30px; text-align: center; }
+        header h1 { font-weight: 300; font-size: 2rem; letter-spacing: -0.5px; margin-bottom: 8px; }
+        header p { color: #888; font-size: 0.9rem; font-weight: 300; }
 
-        .nav-wrapper { position: relative; width: 100%; padding: 20px; }
-        .nav-img { width: 100%; border-radius: 20px; display: block; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .nav-wrapper { position: relative; width: 90%; max-width: 600px; margin: 0 auto 40px; }
+        .nav-img { width: 100%; border-radius: 24px; display: block; box-shadow: 0 20px 40px rgba(0,0,0,0.08); transition: transform 0.5s ease; }
 
-        /* 点击区域与文字标签 */
         .click-area {
-            position: absolute;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .click-area:active { transform: scale(0.95); }
 
         .text-label {
-            background: rgba(255, 255, 255, 0.85);
-            padding: 8px 12px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: bold;
-            color: #333;
-            backdrop-filter: blur(6px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 16px; border-radius: 16px; text-align: center;
+            font-size: 14px; font-weight: 500; color: var(--deep-gray);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.5);
             pointer-events: none;
         }
-        .text-label p { font-size: 10px; color: #666; font-weight: normal; margin-top: 2px; }
+        .text-label p { font-size: 11px; color: #777; margin-top: 2px; font-weight: 300; }
 
         #map-modal {
             position: fixed; top: 100%; left: 0; width: 100%; height: 100%;
-            background-color: white; z-index: 1000;
-            transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex; flex-direction: column;
+            background: var(--brand-white); z-index: 1000;
+            transition: top 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         #map-modal.active { top: 0; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; }
-        .modal-body { flex: 1; width: 100%; border: none; }
-        .close-btn { font-size: 24px; color: #ff4d4f; cursor: pointer; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+        .modal-body { width: 100%; height: calc(100% - 80px); border: none; }
+        .close-btn { font-size: 28px; color: var(--deep-gray); cursor: pointer; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <header><h1>🌸 2026 城市花卉节</h1></header>
+    <header>
+        <h1>Flower Walk Beijing</h1>
+        <p>跟随花期，漫步城市自然之美</p>
+    </header>
 
     <main>
         <div class="nav-wrapper">
@@ -70,15 +66,12 @@
             <div id="open-map-btn" class="click-area" style="top: 55%; left: 10%; width: 35%; height: 20%;">
                 <div class="text-label">🗺️ 赏花地图<p>实时点位导航</p></div>
             </div>
-            
             <div id="guide-btn" class="click-area" style="top: 55%; left: 55%; width: 35%; height: 20%;">
                 <div class="text-label">📸 花卉图鉴<p>认识百种名花</p></div>
             </div>
-            
             <div id="activity-btn" class="click-area" style="top: 20%; left: 10%; width: 35%; height: 20%;">
                 <div class="text-label">📅 活动日程<p>精彩巡游时刻</p></div>
             </div>
-            
             <div id="shop-btn" class="click-area" style="top: 20%; left: 55%; width: 35%; height: 20%;">
                 <div class="text-label">🎁 文创周边<p>精美纪念好物</p></div>
             </div>
@@ -87,7 +80,7 @@
 
     <div id="map-modal">
         <div class="modal-header">
-            <h2>功能导览</h2>
+            <h2 style="font-weight: 300;">北京花卉漫游</h2>
             <span class="close-btn" id="close-map-btn">&times;</span>
         </div>
         <iframe class="modal-body" id="map-iframe" src="" frameborder="0"></iframe>
@@ -102,6 +95,7 @@
             modal.classList.add('active');
         }
 
+        // 事件监听
         document.getElementById('open-map-btn').addEventListener('click', () => openModal("map.html"));
         document.getElementById('guide-btn').addEventListener('click', () => openModal("guide.html"));
         document.getElementById('activity-btn').addEventListener('click', () => openModal("activity.html"));
