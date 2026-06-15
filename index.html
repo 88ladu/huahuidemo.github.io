@@ -2,108 +2,87 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Flower Walk Beijing | 城市花卉漫游</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowerwalk in Beijing</title>
     <style>
-        :root {
-            --brand-white: #FAF8F5;
-            --sage-green: #9FB59A;
-            --rose-pink: #F3D7D7;
-            --deep-gray: #2E2E2E;
-        }
+        :root { --brand-white: #FAF8F5; --deep-gray: #2E2E2E; --rose-pink: #F3D7D7; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--brand-white); color: var(--deep-gray); }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'PingFang SC', sans-serif; }
-        body { background-color: var(--brand-white); color: var(--deep-gray); animation: fadeIn 0.8s ease; }
+        /* 顶部导航 */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid #eee; }
+        .logo { font-weight: bold; font-size: 1.2rem; }
+        .nav-links { display: flex; gap: 20px; font-size: 0.9rem; }
+        .qr-icon { width: 30px; height: 30px; background: #eee; cursor: pointer; }
+
+        /* Hero 视觉区 */
+        .hero { position: relative; height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .hero-bg { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; opacity: 0.5; z-index: -1; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .btn-start { background: var(--rose-pink); padding: 10px 30px; border-radius: 20px; border: none; cursor: pointer; margin-top: 20px; }
+
+        /* 卡片区域 */
+        .cards-container { display: flex; justify-content: space-around; padding: 40px 5%; gap: 20px; overflow-x: auto; }
+        .card { width: 200px; text-align: center; }
+        .card-img { width: 150px; height: 150px; border-radius: 50%; background: var(--rose-pink); margin-bottom: 15px; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        header { padding: 50px 20px 30px; text-align: center; }
-        header h1 { font-weight: 300; font-size: 2rem; letter-spacing: -0.5px; margin-bottom: 8px; }
-        header p { color: #888; font-size: 0.9rem; font-weight: 300; }
-
-        .nav-wrapper { position: relative; width: 90%; max-width: 600px; margin: 0 auto 40px; }
-        .nav-img { width: 100%; border-radius: 24px; display: block; box-shadow: 0 20px 40px rgba(0,0,0,0.08); transition: transform 0.5s ease; }
-
-        .click-area {
-            position: absolute; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .click-area:active { transform: scale(0.95); }
-
-        .text-label {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 16px; border-radius: 16px; text-align: center;
-            font-size: 14px; font-weight: 500; color: var(--deep-gray);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.5);
-            pointer-events: none;
-        }
-        .text-label p { font-size: 11px; color: #777; margin-top: 2px; font-weight: 300; }
-
-        #map-modal {
-            position: fixed; top: 100%; left: 0; width: 100%; height: 100%;
-            background: var(--brand-white); z-index: 1000;
-            transition: top 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #map-modal.active { top: 0; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
-        .modal-body { width: 100%; height: calc(100% - 80px); border: none; }
-        .close-btn { font-size: 28px; color: var(--deep-gray); cursor: pointer; opacity: 0.6; }
+        /* 公告区域 */
+        .announcements { padding: 40px 5%; background: #fdf5f5; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Flowerwalk in Beijing</h1>
-        <p>跟随花期，漫步城市自然之美</p>
+    <nav>
+        <div class="logo">Flowerwalk in Beijing</div>
+        <div class="nav-links">
+            <span>Home</span><span>Explore</span><span>Events</span><span>Store</span>
+        </div>
+        <div class="qr-icon">📱</div>
+    </nav>
+
+    <header class="hero">
+        <img src="屏幕快照 2026-06-15 上午3.00.47.png" class="hero-bg" alt="背景">
+        <h1>Follow the Flowers</h1>
+        <p>Discover the City's Soul</p>
+        <button class="btn-start" id="open-map-btn">Start Your Walk</button>
     </header>
 
-    <main>
-        <div class="nav-wrapper">
-            <img src="屏幕快照 2026-06-15 上午3.00.47.png" class="nav-img" alt="导览图">
-            
-            <div id="open-map-btn" class="click-area" style="top: 55%; left: 10%; width: 35%; height: 20%;">
-                <div class="text-label">🗺️ 赏花地图<p>实时点位导航</p></div>
-            </div>
-            <div id="guide-btn" class="click-area" style="top: 55%; left: 55%; width: 35%; height: 20%;">
-                <div class="text-label">📸 花卉图鉴<p>认识百种名花</p></div>
-            </div>
-            <div id="activity-btn" class="click-area" style="top: 20%; left: 10%; width: 35%; height: 20%;">
-                <div class="text-label">📅 活动日程<p>精彩巡游时刻</p></div>
-            </div>
-            <div id="shop-btn" class="click-area" style="top: 20%; left: 55%; width: 35%; height: 20%;">
-                <div class="text-label">🎁 文创周边<p>精美纪念好物</p></div>
-            </div>
+    <main class="cards-container">
+        <div class="card" id="map-btn">
+            <div class="card-img"></div>
+            <h3>City Walks</h3>
+        </div>
+        <div class="card" id="guide-btn">
+            <div class="card-img"></div>
+            <h3>Bloom Guides</h3>
+        </div>
+        <div class="card" id="activity-btn">
+            <div class="card-img"></div>
+            <h3>Aesthetic Events</h3>
+        </div>
+        <div class="card" id="shop-btn">
+            <div class="card-img"></div>
+            <h3>Collection</h3>
         </div>
     </main>
 
-    <div id="map-modal">
-        <div class="modal-header">
-            <h2 style="font-weight: 300;">北京花卉漫游</h2>
-            <span class="close-btn" id="close-map-btn">&times;</span>
-        </div>
-        <iframe class="modal-body" id="map-iframe" src="" frameborder="0"></iframe>
+    <section class="announcements">
+        <h2>Latest Announcements</h2>
+        <p>March Cherry Blossom routes released...</p>
+    </section>
+
+    <div id="map-modal" style="position:fixed; top:100%; left:0; width:100%; height:100%; background:#fff; transition:0.4s; z-index:100;">
+        <span id="close-map-btn" style="padding:20px; display:block; cursor:pointer;">&times; Close</span>
+        <iframe id="map-iframe" style="width:100%; height:90%; border:none;"></iframe>
     </div>
 
     <script>
+        // 逻辑保持一致，调用 openModal 即可
         const modal = document.getElementById('map-modal');
-        const iframe = document.getElementById('map-iframe');
-
-        function openModal(url) {
-            iframe.src = url;
-            modal.classList.add('active');
-        }
-
-        // 事件监听
+        function openModal(url) { document.getElementById('map-iframe').src = url; modal.style.top = '0'; }
+        
         document.getElementById('open-map-btn').addEventListener('click', () => openModal("map.html"));
-        document.getElementById('guide-btn').addEventListener('click', () => openModal("guide.html"));
-        document.getElementById('activity-btn').addEventListener('click', () => openModal("activity.html"));
-        document.getElementById('shop-btn').addEventListener('click', () => openModal("shop.html"));
-
-        document.getElementById('close-map-btn').addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
+        document.getElementById('close-map-btn').addEventListener('click', () => modal.style.top = '100%');
     </script>
 </body>
 </html>
